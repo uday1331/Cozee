@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19003,
-  "packagerPid": 18407,
-  "expoServerNgrokUrl": "https://85-vqm.anonymous.mobile.exp.direct",
-  "packagerNgrokUrl": "https://packager.85-vqm.anonymous.mobile.exp.direct",
-  "ngrokPid": 18421
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": "https://s2-gyw.anonymous.mobile.exp.direct",
+  "packagerNgrokUrl": "https://packager.s2-gyw.anonymous.mobile.exp.direct",
+  "ngrokPid": 30628
 }

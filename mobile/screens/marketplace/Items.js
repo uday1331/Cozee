@@ -1,48 +1,54 @@
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import Star from './Star';
+import {getProducts} from "../../store/actions/products";
 
-const items = [
-    {
-        id : 1,
-        uri : 'https://www.fantasticfurniture.com.au/medias/BTOBEDDBLOOOFABCHA-LIF-CONTAINER-original-FantasticFurniture-WF-Product-Detail?context=bWFzdGVyfGltYWdlcy9CVE9CRUREQkxPT09GQUJDSEF8MTE4NTAwfGltYWdlL2pwZWd8aW1hZ2VzL0JUT0JFRERCTE9PT0ZBQkNIQS9oOGIvaDUwLzkwNjA4MjMzMDIxNzQuanBnfDAwOTZiZTA2OTU0MjI1NDBkZWM1MGVhNjBkZjYxZjdjYmRkMGFiMGVjM2I3ZmEwYjAxMmI1YjVkNzU2YTEyNzU',
-        name : 'Fancy King size bed',
-        rating : 3.1,
-        price : '$5,042 HKD'
-    },
-    {
-        id : 2,
-        uri : 'https://www.mocka.co.nz/media/product/69/darcy-bed-c7-x.jpg',
-        name : 'Bed for kids',
-        rating : 4.5,
-        price : '$4,073 HKD'
-    },
-    {
-        id : 3,
-        uri : 'https://images-na.ssl-images-amazon.com/images/I/51lMjmAvTkL.jpg',
-        name : 'Warm lamp for study',
-        rating : 2.7,
-        price : '$1,200 HKD'
-    },
-    {
-        id : 4,
-        uri : 'https://images-na.ssl-images-amazon.com/images/I/71vz%2BhxlG9L._SX425_.jpg',
-        name : 'Sofa',
-        rating : 4.9,
-        price : '$12,340 HKD'
-    },
-    {
-        id : 5,
-        uri : 'https://i.ebayimg.com/images/g/Z68AAOSwdoZaeG1G/s-l640.jpg',
-        name : 'Drawer',
-        rating : 4.3,
-        price : '$5,060 HKD'
-    },
-    
-]
-export default class Items extends Component{
+// const items = [
+//     {
+//         id : 1,
+//         uri : 'https://www.fantasticfurniture.com.au/medias/BTOBEDDBLOOOFABCHA-LIF-CONTAINER-original-FantasticFurniture-WF-Product-Detail?context=bWFzdGVyfGltYWdlcy9CVE9CRUREQkxPT09GQUJDSEF8MTE4NTAwfGltYWdlL2pwZWd8aW1hZ2VzL0JUT0JFRERCTE9PT0ZBQkNIQS9oOGIvaDUwLzkwNjA4MjMzMDIxNzQuanBnfDAwOTZiZTA2OTU0MjI1NDBkZWM1MGVhNjBkZjYxZjdjYmRkMGFiMGVjM2I3ZmEwYjAxMmI1YjVkNzU2YTEyNzU',
+//         name : 'Fancy King size bed',
+//         rating : 3.1,
+//         price : '$5,042 HKD'
+//     },
+//     {
+//         id : 2,
+//         uri : 'https://www.mocka.co.nz/media/product/69/darcy-bed-c7-x.jpg',
+//         name : 'Bed for kids',
+//         rating : 4.5,
+//         price : '$4,073 HKD'
+//     },
+//     {
+//         id : 3,
+//         uri : 'https://images-na.ssl-images-amazon.com/images/I/51lMjmAvTkL.jpg',
+//         name : 'Warm lamp for study',
+//         rating : 2.7,
+//         price : '$1,200 HKD'
+//     },
+//     {
+//         id : 4,
+//         uri : 'https://images-na.ssl-images-amazon.com/images/I/71vz%2BhxlG9L._SX425_.jpg',
+//         name : 'Sofa',
+//         rating : 4.9,
+//         price : '$12,340 HKD'
+//     },
+//     {
+//         id : 5,
+//         uri : 'https://i.ebayimg.com/images/g/Z68AAOSwdoZaeG1G/s-l640.jpg',
+//         name : 'Drawer',
+//         rating : 4.3,
+//         price : '$5,060 HKD'
+//     },
+//
+// ]
+class Items extends Component{
+    componentDidMount() {
+        this.props.getProducts();
+    }
+
     render(){
         const { name,trusted, onPress } = this.props;
+        const { products } = this.props.products;
         return(
             <View>
                 <View style={styles.title}>
@@ -51,7 +57,7 @@ export default class Items extends Component{
                 </View>
                 
                 <ScrollView style={styles.container} horizontal={true}>
-                    {items.map(item => {
+                    {products.map(item => {
                         return(
                             <TouchableOpacity style={styles.card} key={item.id} onPress={()=>{onPress()}}>
                                 <View style={styles.imageContainer}>
@@ -79,6 +85,12 @@ export default class Items extends Component{
         )
     }
 }
+const mapStateToProps = (state) => {
+    return{
+        ...state
+    }
+}
+export default connect(mapStateToProps, {getProducts})(Items);
 
 const styles = StyleSheet.create({
     title : {
