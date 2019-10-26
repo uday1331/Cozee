@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import "antd/dist/antd.css";
 
-import { Form, Select, Button, Upload, Icon, Input } from "antd";
+import { Form, Select, Button, Upload, Icon, Input, InputNumber } from "antd";
 
 const { Option } = Select;
 
@@ -18,11 +17,13 @@ class Create extends Component {
 
   normFile = e => {
     console.log("Upload event:", e);
+    console.log(e.fileList);
     if (Array.isArray(e)) {
       return e;
     }
     return e && e.fileList;
   };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -31,18 +32,41 @@ class Create extends Component {
     };
     return (
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-        <Form.Item label="Title" {...formItemLayout}>
-          <Input placeholder="Product Title" />
-        </Form.Item>
-        <Form.Item label="Description" {...formItemLayout}>
-          <Input placeholder="Describe your product" />
-        </Form.Item>
-        <Form.Item label="Categories">
-          {getFieldDecorator("select-multiple", {
+        <Form.Item label="Title">
+          {getFieldDecorator("title", {
             rules: [
               {
                 required: true,
-                message: "Please select your favourite colors!",
+                message: "Please input your name"
+              }
+            ]
+          })(<Input placeholder="Please input your name" />)}
+        </Form.Item>
+        <Form.Item label="Price">
+          {getFieldDecorator("price", {
+            rules: [
+              {
+                message: "Enter product price",
+                required: true
+              }
+            ]
+          })(<InputNumber placeholder="Price" />)}
+        </Form.Item>
+        <Form.Item label="Description">
+          {getFieldDecorator("description", {
+            rules: [
+              {
+                message: "Please input your name"
+              }
+            ]
+          })(<Input placeholder="Describe your product" />)}
+        </Form.Item>
+        <Form.Item label="Categories">
+          {getFieldDecorator("categories", {
+            rules: [
+              {
+                required: true,
+                message: "Please select categories for your product",
                 type: "array"
               }
             ]
@@ -59,12 +83,15 @@ class Create extends Component {
         </Form.Item>
 
         <Form.Item label="Display Image">
-          {getFieldDecorator("upload", {
+          {getFieldDecorator("display-image", {
             valuePropName: "fileList",
-            getValueFromEvent: this.normFile,
-            rules: [{ required: true }]
+            getValueFromEvent: this.normFile
           })(
-            <Upload name="logo" action="/upload.do" listType="picture">
+            <Upload
+              name="logo"
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              listType="picture"
+            >
               <Button>
                 <Icon type="upload" /> Click to upload
               </Button>
@@ -73,12 +100,14 @@ class Create extends Component {
         </Form.Item>
 
         <Form.Item label="Processing Images">
-          {getFieldDecorator("dragger", {
+          {getFieldDecorator("processing-images", {
             valuePropName: "fileList",
-            getValueFromEvent: this.normFile,
-            rules: [{ required: true }]
+            getValueFromEvent: this.normFile
           })(
-            <Upload.Dragger name="files" action="/upload.do">
+            <Upload.Dragger
+              name="files"
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            >
               <p className="ant-upload-drag-icon">
                 <Icon type="inbox" />
               </p>
