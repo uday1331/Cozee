@@ -59,13 +59,16 @@ class AppBar extends React.Component {
                 }
               >
                 <Menu.Item key="sub1">
-                  <Icon type="upload" />
-                  <span className="nav-text">Add Product</span>
-                  <Link to="/createproduct"></Link>
+                  <Link to="/products/add">
+                    <Icon type="upload" />
+                    <span className="nav-text">Add Product</span>
+                  </Link>
                 </Menu.Item>
                 <Menu.Item key="sub2">
+                  <Link to="/products/view">
                   <Icon type="table" />
                   <span className="nav-text">View Products</span>
+                  </Link>
                 </Menu.Item>
               </SubMenu>
               <Menu.Item key="3">
