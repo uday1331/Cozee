@@ -17,7 +17,6 @@ export function getProducts() {
       });
     }
     try {
-      
       let productRef = FirebaseDB.collection("products");
       productRef.onSnapshot(snap => {
         let products = []
