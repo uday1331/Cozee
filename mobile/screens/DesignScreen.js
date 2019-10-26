@@ -65,11 +65,11 @@ export default class DesignScreen extends React.Component {
               selectedItem: navigation.getParam('selectedItem', null)
             });
           }}
-          onDidFocus={payload => {
-            this.setState({
-              selectedItem: navigation.getParam('selectedItem', null)
-            });
-          }}
+          // onDidFocus={payload => {
+          //   this.setState({
+          //     selectedItem: navigation.getParam('selectedItem', null)
+          //   });
+          // }}
         />
         <View ref="captureArea" style={{ flex: 1 }}>
           <TouchableView
@@ -203,7 +203,7 @@ export default class DesignScreen extends React.Component {
         this.state.selectedItem,
         null
       );
-      ExpoTHREE.utils.scaleLongestSideToSize(loadedModel, 0.6);
+      ExpoTHREE.utils.scaleLongestSideToSize(loadedModel, 1.5);
 
       this.mesh = new THREE.Object3D();
       this.mesh.add(loadedModel);
