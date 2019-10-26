@@ -1,6 +1,5 @@
 import React,{ Component } from 'react';
 import { View,Text,ScrollView,StyleSheet } from 'react-native'; 
-import { Header, Left, Body, Right, Title } from 'native-base';
 import Items from './Items';
 const companies = [
     {
@@ -33,13 +32,6 @@ export default class Display extends Component{
     render(){
         return(
             <View>
-                <Header>
-                    <Left/>
-                    <Body>
-                        <Title>Bedroom_1</Title>
-                    </Body>
-                    <Right />
-                </Header>
                 <ScrollView>
                 {companies.map(company => {
                     return <Items style={styles.list} key={company.id} name={company.name} trusted={company.trusted}/>

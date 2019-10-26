@@ -7,6 +7,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 //import screens
 import InitDesign from './screens/InitDesign';
 import DesignScreen from './screens/DesignScreen';
+import Marketplace from './screens/marketplace/Main';
 
 class Details extends React.Component {
     render() {
@@ -21,7 +22,13 @@ class Details extends React.Component {
 const DesignStack = createStackNavigator(
   {
     Init: InitDesign,
-    Design: DesignScreen
+    Design: DesignScreen,
+    Marketplace : {
+      screen: Marketplace,
+      navigationOptions: {
+        title: "For the Bedroom"
+      }
+    }
   },
   {
     initialRouteName: 'Init'
