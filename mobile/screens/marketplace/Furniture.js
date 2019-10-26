@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { ScrollView, StyleSheet, Image, View, TouchableOpacity } from 'react-native'
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { FontAwesome, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+import Assets from '../../assets';
+
 export default class Furniture extends Component {
     state = {
         liked : false
@@ -12,6 +14,12 @@ export default class Furniture extends Component {
         this.setState({
             liked : !liked
         })
+    }
+
+    tryInAR = () => {
+        this.props.navigation.navigate('Design', {
+            selectedItem: Assets.models.stool
+        });
     }
 
     render() {
@@ -32,7 +40,7 @@ export default class Furniture extends Component {
                                 </Body>
                             </Left>
                             <Right>
-                                <Button bordered info>
+                                <Button onPress={() => {this.tryInAR()}} bordered info>
                                     <MaterialCommunityIcons color='#4da6ff' name='augmented-reality' size = {25} style={{marginLeft : 5}}/>
                                     <Text>Try It</Text>
                                 </Button>
