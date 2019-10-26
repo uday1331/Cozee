@@ -27,7 +27,7 @@ export default class Furniture extends Component {
 
     tryInAR = () => {
         this.props.navigation.navigate('Design', {
-            selectedItem: Assets.models.stool
+            selectedItem: Assets.models.cupboard1
         });
     }
 
