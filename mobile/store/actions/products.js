@@ -3,10 +3,12 @@ import {
   Firebase,
   FirebaseStorage
 } from "../../constants/firebase";
+import {ADD_ORDER} from "../../../web/cozee/src/store/actions/products";
 
 export const GET_PRODUCTS = "GET_PRODUCTS";
 export const FETCH_ERROR = "FETCH_ERROR";
 export const UPLOAD_PRODUCTS = "UPLOAD_PRODUCTS";
+export const ADD_ORDER = 'ADD_ORDER';
 
 export function getProducts() {
   return async dispatch => {
@@ -141,4 +143,33 @@ export function uploadFile(base64string, values) {
       });
     }
   };
+}
+
+export function addOrder(ids){
+  return async dispatch => {
+    if(Firebase === null){
+      dispatch({
+        type:FETCH_ERROR,
+        data:null
+      })
+    }
+    try{
+      let orderRef = await FirebaseDB.collection("orders");
+      let id = orderRef.doc().id;
+      ids.map(async id => {
+        await orderRef.doc(id).collection('products').doc(id).set({
+          qty:1,
+        })
+      })
+      dispatch({
+        type:ADD_ORDER,
+        data:id,
+      })
+    }catch(e){
+      dispatch({
+        type:FETCH_ERROR,
+        data:e.message
+      })
+    }
+  }
 }

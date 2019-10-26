@@ -7,6 +7,7 @@ import {
 export const GET_PRODUCTS = "GET_PRODUCTS";
 export const FETCH_ERROR = "FETCH_ERROR";
 export const UPLOAD_PRODUCTS = "UPLOAD_PRODUCTS";
+export const GET_ORDERS = 'GET_ORDERS';
 
 export function getProducts() {
   return async dispatch => {
@@ -141,4 +142,24 @@ export function uploadFile(base64string, values) {
       });
     }
   };
+}
+
+export function getOrders() {
+  return async dispatch => {
+    if(Firebase === null){
+      return (dispatch({
+        type:GET_ORDERS,
+        data:null
+      }));
+    }
+    try{
+      let orderRef = FirebaseDB.collection('orders');
+
+    }catch(e){
+      dispatch({
+        type:FETCH_ERROR,
+        data:e.message,
+      })
+    }
+  }
 }
