@@ -1,31 +1,65 @@
 import React, { Component } from "react";
 import "antd/dist/antd.css";
+import { FirebaseDB } from "../constants/firebase";
+import { connect } from "react-redux";
+import { uploadFile } from "../store/actions/products";
 
 import { Form, Select, Button, Upload, Icon, Input, InputNumber } from "antd";
 
 const { Option } = Select;
 
 class Create extends Component {
-  handleSubmit = e => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      previewImage: "",
+      previewVisible: false
+    };
+  }
+  handleSubmit = async e => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
+        console.log(values);
+        this.props.uploadFile();
       }
     });
   };
-
+  getBase64 = file => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  };
   normFile = e => {
-    console.log("Upload event:", e);
-    console.log(e.fileList);
+    // console.log("Upload event:", e);
+    // console.log(e.fileList);
     if (Array.isArray(e)) {
       return e;
     }
     return e && e.fileList;
   };
+  handleCancel = () => this.setState({ previewVisible: false });
+
+  handlePreview = async file => {
+    console.log("adad");
+    if (!file.url && !file.preview) {
+      file.preview = await this.getBase64(file.originFileObj);
+      this.setState({
+        previewImage: file.url || file.preview,
+        previewVisible: true
+      });
+      console.log(file.previewImage);
+    }
+  };
+
+  handleChange = ({ fileList }) => this.setState({ fileList });
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    console.log(this.state.previewImage);
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 }
@@ -83,7 +117,7 @@ class Create extends Component {
         </Form.Item>
 
         <Form.Item label="Display Image">
-          {getFieldDecorator("display-image", {
+          {getFieldDecorator("displayImage", {
             valuePropName: "fileList",
             getValueFromEvent: this.normFile
           })(
@@ -91,6 +125,8 @@ class Create extends Component {
               name="logo"
               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
               listType="picture"
+              onPreview={this.handlePreview}
+              onChange={this.handleChange}
             >
               <Button>
                 <Icon type="upload" /> Click to upload
@@ -100,13 +136,15 @@ class Create extends Component {
         </Form.Item>
 
         <Form.Item label="Processing Images">
-          {getFieldDecorator("processing-images", {
+          {getFieldDecorator("processingImages", {
             valuePropName: "fileList",
             getValueFromEvent: this.normFile
           })(
             <Upload.Dragger
               name="files"
               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              onPreview={this.handlePreview}
+              onChange={this.handleChange}
             >
               <p className="ant-upload-drag-icon">
                 <Icon type="inbox" />
@@ -131,5 +169,12 @@ class Create extends Component {
   }
 }
 const CreateProduct = Form.create()(Create);
-
-export default CreateProduct;
+const mapStateToProps = state => {
+  return {
+    ...state
+  };
+};
+export default connect(
+  mapStateToProps,
+  { uploadFile }
+)(CreateProduct);
