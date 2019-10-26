@@ -1,9 +1,9 @@
 import React from 'react';
-import Routes from './Routes';
+import Display from './Display';
 
 export default function Main(){
     return(
-        <Routes/>
+        <Display/>
     )
 }
 

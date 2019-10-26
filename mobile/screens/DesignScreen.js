@@ -33,6 +33,7 @@ export default class DesignScreen extends React.Component {
   }
 
   render() {
+    const { navigation } = this.props;
     return(
       <View style={{ flex: 1 }}>
         <TouchableView
@@ -64,7 +65,7 @@ export default class DesignScreen extends React.Component {
             bottom: 42,
             left: 32
            }} >
-             <TouchableOpacity onPress={() => {console.log("open marketplace")}} activeOpacity={0}>
+             <TouchableOpacity onPress={() => {navigation.navigate('Marketplace')}} activeOpacity={0}>
                 <MarketButton />
              </TouchableOpacity>
         </View>
