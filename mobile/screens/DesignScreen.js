@@ -4,10 +4,14 @@ import { AR } from 'expo';
 import ExpoTHREE, { THREE } from 'expo-three';
 import * as ThreeAR from 'expo-three-ar';
 import { View as GraphicsView } from 'expo-graphics';
-import { Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 
 import Assets from '../assets';
 import TouchableView from '../components/TouchableView';
+import Capture from '../components/Capture';
+import MarketButton from '../components/MarketButton';
+import Preview from '../components/Preview';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { width, height } = Dimensions.get('window');
 
@@ -30,21 +34,41 @@ export default class DesignScreen extends React.Component {
 
   render() {
     return(
-      <TouchableView
-        style={{ flex: 1 }}
-        shouldCancelWhenOutside={false}
-        onTouchesBegan={this.onTouchesBegan}>
-        <GraphicsView
+      <View style={{ flex: 1 }}>
+        <TouchableView
           style={{ flex: 1 }}
-          onContextCreate={this.onContextCreate}
-          onRender={this.onRender}
-          onResize={this.onResize}
-          isArEnabled
-          //isArRunningStateEnabled
-          isArCameraStateEnabled
-          arTrackingConfiguration={'ARWorldTrackingConfiguration'}
-        />
-      </TouchableView>
+          shouldCancelWhenOutside={false}
+          onTouchesBegan={this.onTouchesBegan}>
+          <GraphicsView
+            style={{ flex: 1 }}
+            onContextCreate={this.onContextCreate}
+            onRender={this.onRender}
+            onResize={this.onResize}
+            isArEnabled
+            //isArRunningStateEnabled
+            isArCameraStateEnabled
+            arTrackingConfiguration={'ARWorldTrackingConfiguration'}
+          />
+        </TouchableView>
+        <View 
+          style={{ 
+            position: "absolute",
+            bottom: 10,
+            left: (width / 2) - 38
+           }} >
+             <Capture />
+        </View>
+        <View 
+          style={{ 
+            position: "absolute",
+            bottom: 42,
+            left: 32
+           }} >
+             <TouchableOpacity onPress={() => {console.log("open marketplace")}} activeOpacity={0}>
+                <MarketButton />
+             </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 
