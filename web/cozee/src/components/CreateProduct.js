@@ -2,64 +2,71 @@ import React, { Component } from "react";
 import "antd/dist/antd.css";
 import { FirebaseDB } from "../constants/firebase";
 import { connect } from "react-redux";
-import { uploadFile } from "../store/actions/products";
+import { uploadProduct} from "../store/actions/products";
 
-import { Form, Select, Button, Upload, Icon, Input, InputNumber } from "antd";
+import { Form, Select, Button, Upload, Icon, Input, InputNumber, message } from "antd";
 
 const { Option } = Select;
 
+function getBase64(img, callback) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+}
+
+function beforeUpload(file) {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+        message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+        message.error('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
+}
 class Create extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      previewImage: "",
-      previewVisible: false
+        loading:false
     };
   }
-  handleSubmit = async e => {
-    e.preventDefault();
-    this.props.form.validateFields(async (err, values) => {
-      if (!err) {
-        console.log(values);
-        this.props.uploadFile();
-      }
-    });
-  };
-  getBase64 = file => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
-  };
-  normFile = e => {
-    // console.log("Upload event:", e);
-    // console.log(e.fileList);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-  handleCancel = () => this.setState({ previewVisible: false });
 
-  handlePreview = async file => {
-    console.log("adad");
-    if (!file.url && !file.preview) {
-      file.preview = await this.getBase64(file.originFileObj);
-      this.setState({
-        previewImage: file.url || file.preview,
-        previewVisible: true
-      });
-      console.log(file.previewImage);
+handleChange = info => {
+    if (info.file.status === 'uploading') {
+        this.setState({ loading: true });
+        return;
     }
-  };
-
-  handleChange = ({ fileList }) => this.setState({ fileList });
+    if (info.file.status === 'done') {
+        // Get this url from response in real world.
+        getBase64(info.file.originFileObj, imageUrl =>
+            this.setState({
+                imageUrl,
+                loading: false,
+            }),
+        );
+    }
+};
+    handleSubmit = e => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+                this.props.uploadProduct(values, this.state.imageUrl);
+            }
+        });
+    };
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    console.log(this.state.previewImage);
+      const uploadButton = (
+          <div>
+              <Icon type={this.state.loading ? 'loading' : 'upload'} />
+              <div className="ant-upload-text">Upload</div>
+          </div>
+      );
+      const { imageUrl } = this.state;
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 }
@@ -118,20 +125,18 @@ class Create extends Component {
 
         <Form.Item label="Display Image">
           {getFieldDecorator("displayImage", {
-            valuePropName: "fileList",
-            getValueFromEvent: this.normFile
           })(
-            <Upload
-              name="logo"
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              listType="picture"
-              onPreview={this.handlePreview}
-              onChange={this.handleChange}
-            >
-              <Button>
-                <Icon type="upload" /> Click to upload
-              </Button>
-            </Upload>
+              <Upload
+                  name="file"
+                  listType="picture-card"
+                  className="avatar-uploader"
+                  showUploadList={false}
+                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  beforeUpload={beforeUpload}
+                  onChange={this.handleChange}
+              >
+                  {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+              </Upload>
           )}
         </Form.Item>
 
@@ -176,5 +181,5 @@ const mapStateToProps = state => {
 };
 export default connect(
   mapStateToProps,
-  { uploadFile }
+  { uploadProduct }
 )(CreateProduct);
