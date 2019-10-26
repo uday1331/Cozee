@@ -8,7 +8,6 @@ import { Dimensions, View, Alert } from 'react-native';
 import { captureRef as takeSnapshotAsync } from 'react-native-view-shot';
 import { NavigationEvents } from 'react-navigation';
 
-import Assets from '../assets';
 import TouchableView from '../components/TouchableView';
 import Capture from '../components/Capture';
 import MarketButton from '../components/MarketButton';
@@ -58,7 +57,7 @@ export default class DesignScreen extends React.Component {
     console.log(this.state.selectedItem);
     const { navigation } = this.props;
     console.log(navigation.getParam('selectedItem', null));
-    return(
+    return (
       <View style={{ flex: 1 }} >
         <NavigationEvents
           onWillFocus={payload => {
@@ -89,35 +88,35 @@ export default class DesignScreen extends React.Component {
             />
           </TouchableView>
         </View>
-        <View 
-          style={{ 
+        <View
+          style={{
             position: "absolute",
             bottom: 10,
             left: (width / 2) - 42
-           }} >
-             <TouchableOpacity onPress={() => {this.captureImage()}} activeOpacity={0}>
-               <Capture />
-             </TouchableOpacity>
+          }} >
+          <TouchableOpacity onPress={() => { this.captureImage() }} activeOpacity={0}>
+            <Capture />
+          </TouchableOpacity>
         </View>
-        <View 
-          style={{ 
+        <View
+          style={{
             position: "absolute",
             bottom: 42,
             left: 32
-           }} >
-             <TouchableOpacity onPress={() => {navigation.navigate('Marketplace')}} activeOpacity={0}>
-                <MarketButton />
-             </TouchableOpacity>
+          }} >
+          <TouchableOpacity onPress={() => { navigation.navigate('Marketplace') }} activeOpacity={0}>
+            <MarketButton />
+          </TouchableOpacity>
         </View>
-        <View 
-          style={{ 
+        <View
+          style={{
             position: "absolute",
             bottom: 42,
             right: 32
-           }} >
-             <TouchableOpacity onPress={() => {navigation.navigate('Checkout')}} activeOpacity={0}>
-                <AddToCartBtn />
-             </TouchableOpacity>
+          }} >
+          <TouchableOpacity onPress={() => { navigation.navigate('Checkout') }} activeOpacity={0}>
+            <AddToCartBtn />
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -205,7 +204,7 @@ export default class DesignScreen extends React.Component {
         null
       );
       ExpoTHREE.utils.scaleLongestSideToSize(loadedModel, 0.6);
-  
+
       this.mesh = new THREE.Object3D();
       this.mesh.add(loadedModel);
 
@@ -214,9 +213,9 @@ export default class DesignScreen extends React.Component {
       this.scene.add(this.itemInScene);
 
       this.itemInScene.matrixAutoUpdate = false;
-  
+
       const matrix = new THREE.Matrix4();
-      matrix.fromArray(worldTransform); 
+      matrix.fromArray(worldTransform);
 
       this.itemInScene.applyMatrix(matrix);
       this.itemInScene.updateMatrix();
