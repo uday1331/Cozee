@@ -32,7 +32,7 @@ export function getProducts() {
                 price: data.price,
                 description: data.description,
                 category: data.category,
-                img: data.displayImage
+                img: data.displayImage,
               };
               products.push(product);
             }
@@ -78,6 +78,7 @@ export function uploadProduct (values, base64) {
     try{
       let id = await FirebaseDB.collection("products").doc().id;
       let url = await uploadFile(id, base64);
+      console.log(url);
       let setProduct = await FirebaseDB.collection("products").doc(id).set({
         title: values.title,
         price: values.title,
@@ -95,7 +96,7 @@ export function uploadProduct (values, base64) {
   }
 }
 
-export function uploadFile(id, base64string) {
+export function uploadFile(base64string, values) {
   return async dispatch => {
     if (Firebase === null) {
       dispatch({
@@ -104,16 +105,22 @@ export function uploadFile(id, base64string) {
       });
     }
     try {
-
+      let id = await FirebaseDB.collection("products").doc().id;
       let storageRef = FirebaseStorage.ref("products");
       let imageLocation = await storageRef.child(id + "/displayImage");
       let arr = base64string.split(',')
       let url;
       base64string = arr[1];
-      imageLocation.putString(base64string, "base64").then(function(snapshot) {
-        console.log('uploaded');
-        url = snapshot.ref.getDownloadURL();
-        return url;
+      await imageLocation.putString(base64string, "base64").then(function(snapshot) {
+        url = snapshot.ref.getDownloadURL().then(async url => {
+          await FirebaseDB.collection("products").doc(id).set({
+            title: values.title,
+            price: values.price,
+            displayImage: url,
+            description: values.description ? values.description : '',
+            category: values.categories.join(' '),
+          }).catch(e=> console.log(e.message));
+        });
       })
     } catch (e) {
         console.log(e.message);
