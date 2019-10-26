@@ -17,9 +17,10 @@ export function getProducts() {
       });
     }
     try {
-      let products = [];
-      let productRef = await FirebaseDB.collection("products");
-      await productRef.onSnapshot(snap => {
+      
+      let productRef = FirebaseDB.collection("products");
+      productRef.onSnapshot(snap => {
+        let products = []
         snap.docChanges().map(change => {
           let data = change.doc.data();
           if (change.type === "added") {
@@ -32,9 +33,11 @@ export function getProducts() {
                 price: data.price,
                 description: data.description,
                 category: data.category,
-                img: data.displayImage
+                img: data.displayImage,
+                company:data.company,
+                rating: data.rating,
               };
-              products.push(product);
+             products.push(product);
             }
           } else if (change.type === "modified") {
             let index = products.findIndex(e => {
@@ -46,7 +49,9 @@ export function getProducts() {
                 price: data.price,
                 description: data.description,
                 category: data.category,
-                img: data.displayImage
+                img: data.displayImage,
+                company: data.company,
+                rating: data.rating,
               };
               products[index] = product;
             }
@@ -57,8 +62,8 @@ export function getProducts() {
           data: products
         });
       });
-      console.log(productRef);
     } catch (e) {
+      console.log(e.message);
       dispatch({
         type: "FETCH_ERROR",
         data: e.message

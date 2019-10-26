@@ -16,6 +16,7 @@ export default class Furniture extends Component {
 
     render() {
         const { liked } = this.state;
+        const item = this.props.navigation.getParam('item', {});
         return (
             <ScrollView>
                 <Container>
@@ -24,7 +25,7 @@ export default class Furniture extends Component {
                             <CardItem>
                             <Left>
                                 <Body>
-                                <Text style={styles.company}>Furniture King</Text>
+                                <Text style={styles.company}>{item.title}</Text>
                                 <View style={styles.address}>
                                     <Entypo name='location' size={15}/>
                                     <Text style={{marginLeft : 5}} note>Cyberport 3, Hong Kong</Text>
@@ -39,7 +40,7 @@ export default class Furniture extends Component {
                             </Right>
                             </CardItem>
                             <CardItem cardBody>
-                                <Image source={{uri: 'https://www.mocka.co.nz/media/product/69/darcy-bed-c7-x.jpg'}} style={{height: 200, width: null, flex: 1}}/>
+                                <Image source={{uri:item.img}} style={{height: 200, width: null, flex: 1}}/>
                             </CardItem>
                             <CardItem>
                             <Left>
