@@ -66,14 +66,16 @@ class AppBar extends React.Component {
                 </Menu.Item>
                 <Menu.Item key="sub2">
                   <Link to="/products/view">
-                  <Icon type="table" />
-                  <span className="nav-text">View Products</span>
+                    <Icon type="table" />
+                    <span className="nav-text">View Products</span>
                   </Link>
                 </Menu.Item>
               </SubMenu>
               <Menu.Item key="3">
-                <Icon type="book" />
-                <span className="nav-text">Sales</span>
+                <Link to="/sales">
+                  <Icon type="book" />
+                  <span className="nav-text">Sales</span>
+                </Link>
               </Menu.Item>
             </Menu>
           </Sider>
@@ -82,12 +84,35 @@ class AppBar extends React.Component {
               style={{
                 background: "#fff",
                 padding: 0,
-                textAlign: "right"
+                textAlign: "center",
+                display: "flex",
+                verticalAlign: "middle"
               }}
             >
-              <Button type="primary" size="large" style={{ marginRight: 20 }}>
-                Logout
-              </Button>
+              <div
+                style={{
+                  fontSize: 30,
+                  width: 1000,
+                  textAlign: "center",
+                  paddingLeft: 310
+                }}
+              >
+                IDEA
+              </div>
+              <div
+                style={{
+                  size: 300,
+                  paddingLeft: 300
+                }}
+              >
+                <Button
+                  type="primary"
+                  size="large"
+                  style={{ marginRight: 20, marginTop: 10 }}
+                >
+                  Logout
+                </Button>
+              </div>
             </Header>
             <Content style={{ margin: "24px 16px 0" }}>
               <div
