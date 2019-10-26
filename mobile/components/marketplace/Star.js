@@ -6,7 +6,7 @@ export default function Star(props){
         <View style={styles.container}>
             <View style={styles.rating}>
                 <Image 
-                    source = {{uri : 'https://clipart.info/images/ccovers/1495916677round-star-png-image-yellow.png'}}
+                    source = {{uri : 'http://pluspng.com/img-png/yellow-stars-png-hd-hd-quality-wallpaper-collection-pattern-2000x2000-star-2000.png'}}
                     style = {styles.star}
                 />
                 <Text>{props.rating}</Text>
