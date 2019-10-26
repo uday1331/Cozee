@@ -102,7 +102,7 @@ handleChange = info => {
                       }
                   ],
                   initialValue:'Idea'
-              })(<Input placeholder="Idea" disabled/>)}
+              })(<Input placeholder="Idea"/>)}
           </Form.Item>
         <Form.Item label="Description">
           {getFieldDecorator("description", {

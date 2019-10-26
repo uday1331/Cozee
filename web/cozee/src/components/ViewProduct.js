@@ -9,9 +9,10 @@ class ViewProduct extends React.Component {
   }
   render() {
     const { products } = this.props.products;
+    let filterProducts = products.filter(p=> p.company === 'Idea');
     return (
       <div style={{ display: "flex", flexWrap: "wrap" }}>
-        {products.map(product => {
+        {filterProducts.map(product => {
           return <Product product={product} />;
         })}
       </div>
