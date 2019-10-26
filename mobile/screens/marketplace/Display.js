@@ -5,38 +5,48 @@ import Items from './Items';
 const companies = [
     {
         id : 1,
-        name : 'Furniture King',
+        name : 'Beautiful House',
         trusted : true
     },
     {
         id : 2,
-        name : 'Furniture King',
+        name : 'Idea',
         trusted : false
     },
     {
         id : 3,
-        name : 'Furniture King',
+        name : 'Furniture Cosmos',
         trusted : false
     },
     {
         id : 4,
-        name : 'Furniture King',
+        name : 'ChairCharm',
         trusted : true
     },
     {
         id : 5,
-        name : 'Furniture King',
+        name : 'LampIt',
+        trusted : false
+    },
+    {
+        id : 6,
+        name : 'Beautiful House',
         trusted : false
     }
 ]
 export default class Display extends Component{
-    render(){
+    navigate = (item) => {
         const { navigation } = this.props;
+        navigation.navigate('Furniture', {
+            item
+        });
+    }
+    render(){
         return(
             <View>
                 <ScrollView>
                 {companies.map(company => {
-                    return <Items style={styles.list} key={company.id} name={company.name} trusted={company.trusted} onPress={()=>{navigation.navigate('Furniture')}}/>
+                    return <Items style={styles.list} key={company.id} name={company.name} trusted={company.trusted} onPress={(item)=>this.navigate(item)}/>
                 })}
                 </ScrollView>
             </View>

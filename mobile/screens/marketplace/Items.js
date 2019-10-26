@@ -2,45 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import Star from './Star';
 import {getProducts} from "../../store/actions/products";
-
-// const items = [
-//     {
-//         id : 1,
-//         uri : 'https://www.fantasticfurniture.com.au/medias/BTOBEDDBLOOOFABCHA-LIF-CONTAINER-original-FantasticFurniture-WF-Product-Detail?context=bWFzdGVyfGltYWdlcy9CVE9CRUREQkxPT09GQUJDSEF8MTE4NTAwfGltYWdlL2pwZWd8aW1hZ2VzL0JUT0JFRERCTE9PT0ZBQkNIQS9oOGIvaDUwLzkwNjA4MjMzMDIxNzQuanBnfDAwOTZiZTA2OTU0MjI1NDBkZWM1MGVhNjBkZjYxZjdjYmRkMGFiMGVjM2I3ZmEwYjAxMmI1YjVkNzU2YTEyNzU',
-//         name : 'Fancy King size bed',
-//         rating : 3.1,
-//         price : '$5,042 HKD'
-//     },
-//     {
-//         id : 2,
-//         uri : 'https://www.mocka.co.nz/media/product/69/darcy-bed-c7-x.jpg',
-//         name : 'Bed for kids',
-//         rating : 4.5,
-//         price : '$4,073 HKD'
-//     },
-//     {
-//         id : 3,
-//         uri : 'https://images-na.ssl-images-amazon.com/images/I/51lMjmAvTkL.jpg',
-//         name : 'Warm lamp for study',
-//         rating : 2.7,
-//         price : '$1,200 HKD'
-//     },
-//     {
-//         id : 4,
-//         uri : 'https://images-na.ssl-images-amazon.com/images/I/71vz%2BhxlG9L._SX425_.jpg',
-//         name : 'Sofa',
-//         rating : 4.9,
-//         price : '$12,340 HKD'
-//     },
-//     {
-//         id : 5,
-//         uri : 'https://i.ebayimg.com/images/g/Z68AAOSwdoZaeG1G/s-l640.jpg',
-//         name : 'Drawer',
-//         rating : 4.3,
-//         price : '$5,060 HKD'
-//     },
-//
-// ]
 class Items extends Component{
     componentDidMount() {
         this.props.getProducts();
@@ -48,6 +9,26 @@ class Items extends Component{
     render(){
         const { name,trusted, onPress } = this.props;
         const { products } = this.props.products;
+import {connect} from "react-redux";
+
+class Items extends Component{
+    componentDidMount() {
+        this.props.getProducts(this.props.name);
+    }
+    componentDidUpdate(prevProps){ 
+        if(prevProps.name !== this.props.name)
+        { 
+            this.props.getProducts();
+        }
+    }
+
+    render(){
+        const { name,trusted, onPress } = this.props;
+        const { products } = this.props.products;
+        let filterProducts = products.filter(p => {
+            return p.company === name}
+        )
+        console.log(filterProducts);
         return(
             <View>
                 <View style={styles.title}>
@@ -56,19 +37,19 @@ class Items extends Component{
                 </View>
                 
                 <ScrollView style={styles.container} horizontal={true}>
-                    {products.map(item => {
+                    {filterProducts.map(item => {
                         return(
-                            <TouchableOpacity style={styles.card} key={item.id} onPress={()=>{onPress()}}>
+                            <TouchableOpacity style={styles.card} key={item.id} onPress={() => onPress(item)}>
                                 <View style={styles.imageContainer}>
                                     <Image 
                                         style={styles.image}
-                                        source={{uri : item.uri}}
+                                        source={{uri : item.img}}
                                     />  
                                 </View>
                                 <View>
-                                    <Text style={styles.text}>{item.name}</Text>
+                                    <Text style={styles.text}>{item.title}</Text>
                                     <View style={styles.description}>
-                                        <Text style={styles.price}>{item.price}</Text>
+                                        <Text style={styles.price}>HKD &nbsp;{item.price}</Text>
                                         <View style={styles.rating}>
                                             <Star rating={item.rating}/>
                                         </View>

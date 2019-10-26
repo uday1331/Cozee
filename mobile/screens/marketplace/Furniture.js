@@ -1,61 +1,71 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Image, View, TouchableOpacity } from 'react-native'
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { FontAwesome, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+import CommentList from '../../components/CommentList';
 export default class Furniture extends Component {
     state = {
-        liked : false
+        liked: false,
+        showComment: false
     }
 
     onLikePress = () => {
         const { liked } = this.state;
         this.setState({
-            liked : !liked
+            liked: !liked
+        })
+    }
+
+    onCommentPress = () => {
+        const { showComment } = this.state;
+        this.setState({
+            showComment: !showComment
         })
     }
 
     render() {
-        const { liked } = this.state;
+        const { liked, showComment } = this.state;
         return (
             <ScrollView>
                 <Container>
                     <Content>
                         <Card>
                             <CardItem>
-                            <Left>
-                                <Body>
-                                <Text style={styles.company}>Furniture King</Text>
-                                <View style={styles.address}>
-                                    <Entypo name='location' size={15}/>
-                                    <Text style={{marginLeft : 5}} note>Cyberport 3, Hong Kong</Text>
-                                </View>
-                                </Body>
-                            </Left>
-                            <Right>
-                                <Button bordered info>
-                                    <MaterialCommunityIcons color='#4da6ff' name='augmented-reality' size = {25} style={{marginLeft : 5}}/>
-                                    <Text>Try It</Text>
-                                </Button>
-                            </Right>
+                                <Left>
+                                    <Body>
+                                        <Text style={styles.company}>Furniture King</Text>
+                                        <View style={styles.address}>
+                                            <Entypo name='location' size={15} />
+                                            <Text style={{ marginLeft: 5 }} note>Cyberport 3, Hong Kong</Text>
+                                        </View>
+                                    </Body>
+                                </Left>
+                                <Right>
+                                    <Button bordered info>
+                                        <MaterialCommunityIcons color='#4da6ff' name='augmented-reality' size={25} style={{ marginLeft: 5 }} />
+                                        <Text>Try It</Text>
+                                    </Button>
+                                </Right>
                             </CardItem>
                             <CardItem cardBody>
-                                <Image source={{uri: 'https://www.mocka.co.nz/media/product/69/darcy-bed-c7-x.jpg'}} style={{height: 200, width: null, flex: 1}}/>
+                                <Image source={{ uri: 'https://www.mocka.co.nz/media/product/69/darcy-bed-c7-x.jpg' }} style={{ height: 200, width: null, flex: 1 }} />
                             </CardItem>
                             <CardItem>
-                            <Left>
-                                <Button  onPress={this.onLikePress} transparent>
-                                    {liked ? <FontAwesome name='thumbs-up' size={15} color='#4da6ff'/> : <FontAwesome name='thumbs-o-up' size = {15} color='#4da6ff'/>}
-                                    <Text style={{color : '#4da6ff'}}>{liked ? 'You and 12 others liked this' : '12 Likes'}</Text>
-                                </Button>
-                            </Left>
-                            <Right>
-                                <Button transparent>
-                                    <FontAwesome name='comment' size={15} color = '#4da6ff'/>
-                                    <Text style={{color : '#4da6ff'}}>7 Comments</Text>
-                                </Button>
-                            </Right>
+                                <Left>
+                                    <Button onPress={this.onLikePress} transparent>
+                                        {liked ? <FontAwesome name='thumbs-up' size={15} color='#4da6ff' /> : <FontAwesome name='thumbs-o-up' size={15} color='#4da6ff' />}
+                                        <Text style={{ color: '#4da6ff' }}>{liked ? 'You and 12 others liked this' : '12 Likes'}</Text>
+                                    </Button>
+                                </Left>
+                                <Right>
+                                    <Button transparent onPress={this.onCommentPress}>
+                                        <FontAwesome name='comment' size={15} color='#4da6ff' />
+                                        <Text style={{ color: '#4da6ff' }}>{showComment ? 'Hide Comments' : '7 Comments'}</Text>
+                                    </Button>
+                                </Right>
                             </CardItem>
                         </Card>
+                        {showComment ? <CommentList /> : <View></View>}
                     </Content>
                 </Container>
             </ScrollView>
@@ -63,34 +73,34 @@ export default class Furniture extends Component {
     }
 }
 
-const styles=StyleSheet.create({
-    company : {
-        fontSize : 24,
-        fontWeight : 'bold',
-        paddingBottom : 10
+const styles = StyleSheet.create({
+    company: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        paddingBottom: 10
     },
-    address : {
-        display : 'flex', 
-        flexDirection : 'row',
-        alignItems : 'center',
-        paddingBottom : 10
-    },
-    button : {
+    address: {
         display: 'flex',
-        flexDirection : 'row',
-        alignItems : 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: 10
+    },
+    button: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
         backgroundColor: 'white',
         width: 200
     },
-    container:{
-        alignItems:'center',
+    container: {
+        alignItems: 'center',
         backgroundColor: '#ede3f2',
         padding: 100
     },
-    modal:{
+    modal: {
     },
 
-    button:{
+    button: {
         alignItems: 'center',
         backgroundColor: '#DDDDDD',
         padding: 10
@@ -109,7 +119,7 @@ const styles=StyleSheet.create({
     //       onRequestClose={() => {
     //         Alert.alert('Modal has been closed.');
     //       }}>
-          
+
     //       <View>
     //         <View>
     //           <Card>
