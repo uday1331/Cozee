@@ -2,7 +2,6 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 import  FirebaseModule from 'firebase/app';
-import firebaseConfig from '../constants/firebase';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCCFA6nUREghV-dn4Sh21qzQRdjj6Ded9E",
@@ -16,9 +15,8 @@ const firebaseConfig = {
 };
 
 let firebaseInitialized;
-FirebaseModule.initializeApp(firebaseConfig).then(result=>
-    firebaseInitialized=true
-);
+FirebaseModule.initializeApp(firebaseConfig);
+firebaseInitialized=true;
 
 let db;
 let storage;

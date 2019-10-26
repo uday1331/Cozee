@@ -1,48 +1,106 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import "antd/dist/antd.css";
+import { FirebaseDB } from "../constants/firebase";
+import { connect } from "react-redux";
+import { uploadFile } from "../store/actions/products";
 
-import { Form, Select, Button, Upload, Icon, Input } from "antd";
+import { Form, Select, Button, Upload, Icon, Input, InputNumber } from "antd";
 
 const { Option } = Select;
 
 class Create extends Component {
-  handleSubmit = e => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      previewImage: "",
+      previewVisible: false
+    };
+  }
+  handleSubmit = async e => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
+        console.log(values);
+        this.props.uploadFile();
       }
     });
   };
-
+  getBase64 = file => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  };
   normFile = e => {
-    console.log("Upload event:", e);
+    // console.log("Upload event:", e);
+    // console.log(e.fileList);
     if (Array.isArray(e)) {
       return e;
     }
     return e && e.fileList;
   };
+  handleCancel = () => this.setState({ previewVisible: false });
+
+  handlePreview = async file => {
+    console.log("adad");
+    if (!file.url && !file.preview) {
+      file.preview = await this.getBase64(file.originFileObj);
+      this.setState({
+        previewImage: file.url || file.preview,
+        previewVisible: true
+      });
+      console.log(file.previewImage);
+    }
+  };
+
+  handleChange = ({ fileList }) => this.setState({ fileList });
+
   render() {
     const { getFieldDecorator } = this.props.form;
+    console.log(this.state.previewImage);
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 }
     };
     return (
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-        <Form.Item label="Title" {...formItemLayout}>
-          <Input placeholder="Product Title" />
-        </Form.Item>
-        <Form.Item label="Description" {...formItemLayout}>
-          <Input placeholder="Describe your product" />
-        </Form.Item>
-        <Form.Item label="Categories">
-          {getFieldDecorator("select-multiple", {
+        <Form.Item label="Title">
+          {getFieldDecorator("title", {
             rules: [
               {
                 required: true,
-                message: "Please select your favourite colors!",
+                message: "Please input your name"
+              }
+            ]
+          })(<Input placeholder="Please input your name" />)}
+        </Form.Item>
+        <Form.Item label="Price">
+          {getFieldDecorator("price", {
+            rules: [
+              {
+                message: "Enter product price",
+                required: true
+              }
+            ]
+          })(<InputNumber placeholder="Price" />)}
+        </Form.Item>
+        <Form.Item label="Description">
+          {getFieldDecorator("description", {
+            rules: [
+              {
+                message: "Please input your name"
+              }
+            ]
+          })(<Input placeholder="Describe your product" />)}
+        </Form.Item>
+        <Form.Item label="Categories">
+          {getFieldDecorator("categories", {
+            rules: [
+              {
+                required: true,
+                message: "Please select categories for your product",
                 type: "array"
               }
             ]
@@ -59,12 +117,17 @@ class Create extends Component {
         </Form.Item>
 
         <Form.Item label="Display Image">
-          {getFieldDecorator("upload", {
+          {getFieldDecorator("displayImage", {
             valuePropName: "fileList",
-            getValueFromEvent: this.normFile,
-            rules: [{ required: true }]
+            getValueFromEvent: this.normFile
           })(
-            <Upload name="logo" action="/upload.do" listType="picture">
+            <Upload
+              name="logo"
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              listType="picture"
+              onPreview={this.handlePreview}
+              onChange={this.handleChange}
+            >
               <Button>
                 <Icon type="upload" /> Click to upload
               </Button>
@@ -73,12 +136,16 @@ class Create extends Component {
         </Form.Item>
 
         <Form.Item label="Processing Images">
-          {getFieldDecorator("dragger", {
+          {getFieldDecorator("processingImages", {
             valuePropName: "fileList",
-            getValueFromEvent: this.normFile,
-            rules: [{ required: true }]
+            getValueFromEvent: this.normFile
           })(
-            <Upload.Dragger name="files" action="/upload.do">
+            <Upload.Dragger
+              name="files"
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              onPreview={this.handlePreview}
+              onChange={this.handleChange}
+            >
               <p className="ant-upload-drag-icon">
                 <Icon type="inbox" />
               </p>
@@ -102,5 +169,12 @@ class Create extends Component {
   }
 }
 const CreateProduct = Form.create()(Create);
-
-export default CreateProduct;
+const mapStateToProps = state => {
+  return {
+    ...state
+  };
+};
+export default connect(
+  mapStateToProps,
+  { uploadFile }
+)(CreateProduct);
