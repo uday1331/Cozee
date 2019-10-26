@@ -2,13 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import Star from './Star';
 import {getProducts} from "../../store/actions/products";
-class Items extends Component{
-    componentDidMount() {
-        this.props.getProducts();
-    }
-    render(){
-        const { name,trusted, onPress } = this.props;
-        const { products } = this.props.products;
 import {connect} from "react-redux";
 
 class Items extends Component{
