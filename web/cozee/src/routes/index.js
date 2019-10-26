@@ -9,10 +9,12 @@ class Index extends React.Component {
             <BrowserRouter>
                 <Switch>
                     <AppBar>
-                        <Route exact path="/" component={}/>
+                        {/*<Route exact path="/" component={}/>*/}
                     </AppBar>
                 </Switch>
             </BrowserRouter>
         )
     }
 }
+
+export default Index;
