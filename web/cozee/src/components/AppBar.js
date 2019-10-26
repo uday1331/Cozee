@@ -1,6 +1,7 @@
 import React from "react";
 import "antd/dist/antd.css";
 import { Layout, Menu, Icon, Button } from "antd";
+import { Link } from "react-router-dom";
 
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -17,6 +18,7 @@ class AppBar extends React.Component {
   };
   render() {
     console.log("rendering");
+    const { children } = this.props;
     return (
       <div className="AppBar">
         <Layout>
@@ -45,6 +47,7 @@ class AppBar extends React.Component {
               <Menu.Item key="1">
                 <Icon type="user" />
                 <span className="nav-text">Profile</span>
+                <Link to="/profile" />
               </Menu.Item>
               <SubMenu
                 key="2"
@@ -58,6 +61,7 @@ class AppBar extends React.Component {
                 <Menu.Item key="sub1">
                   <Icon type="upload" />
                   <span className="nav-text">Add Product</span>
+                  <Link to="/createproduct"></Link>
                 </Menu.Item>
                 <Menu.Item key="sub2">
                   <Icon type="table" />
@@ -83,8 +87,10 @@ class AppBar extends React.Component {
               </Button>
             </Header>
             <Content style={{ margin: "24px 16px 0" }}>
-              <div style={{ padding: 24, background: "#fff", minHeight: 600 }}>
-                content
+              <div
+                style={{ padding: 24, background: "#fff", minHeight: "100vh" }}
+              >
+                {children}
               </div>
             </Content>
           </Layout>
