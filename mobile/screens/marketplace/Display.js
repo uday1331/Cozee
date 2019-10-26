@@ -5,27 +5,32 @@ import Items from './Items';
 const companies = [
     {
         id : 1,
-        name : 'Furniture King',
+        name : 'IDEA',
         trusted : true
     },
     {
         id : 2,
-        name : 'Furniture King',
+        name : 'Homeshopie',
         trusted : false
     },
     {
         id : 3,
-        name : 'Furniture King',
+        name : 'Furniture Cosmos',
         trusted : false
     },
     {
         id : 4,
-        name : 'Furniture King',
+        name : 'ChairCharm',
         trusted : true
     },
     {
         id : 5,
-        name : 'Furniture King',
+        name : 'LampIt',
+        trusted : false
+    },
+    {
+        id : 6,
+        name : 'Beautiful House',
         trusted : false
     }
 ]
