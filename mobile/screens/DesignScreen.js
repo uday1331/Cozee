@@ -6,6 +6,7 @@ import * as ThreeAR from 'expo-three-ar';
 import { View as GraphicsView } from 'expo-graphics';
 import { Dimensions, View, Alert } from 'react-native';
 import { captureRef as takeSnapshotAsync } from 'react-native-view-shot';
+import { NavigationEvents } from 'react-navigation';
 
 import Assets from '../assets';
 import TouchableView from '../components/TouchableView';
@@ -13,6 +14,8 @@ import Capture from '../components/Capture';
 import MarketButton from '../components/MarketButton';
 import Preview from '../components/Preview';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AddToCartBtn from '../components/AddToCartBrtn';
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -21,7 +24,7 @@ export default class DesignScreen extends React.Component {
     super(props);
 
     this.state = {
-      selectedItem: Assets.models.stool
+      selectedItem: props.navigation.getParam('selectedItem', null)
     }
   }
 
@@ -52,9 +55,23 @@ export default class DesignScreen extends React.Component {
   }
 
   render() {
+    console.log(this.state.selectedItem);
     const { navigation } = this.props;
+    console.log(navigation.getParam('selectedItem', null));
     return(
       <View style={{ flex: 1 }} >
+        <NavigationEvents
+          onWillFocus={payload => {
+            this.setState({
+              selectedItem: navigation.getParam('selectedItem', null)
+            });
+          }}
+          onDidFocus={payload => {
+            this.setState({
+              selectedItem: navigation.getParam('selectedItem', null)
+            });
+          }}
+        />
         <View ref="captureArea" style={{ flex: 1 }}>
           <TouchableView
             style={{ flex: 1 }}
@@ -76,7 +93,7 @@ export default class DesignScreen extends React.Component {
           style={{ 
             position: "absolute",
             bottom: 10,
-            left: (width / 2) - 38
+            left: (width / 2) - 42
            }} >
              <TouchableOpacity onPress={() => {this.captureImage()}} activeOpacity={0}>
                <Capture />
@@ -90,6 +107,16 @@ export default class DesignScreen extends React.Component {
            }} >
              <TouchableOpacity onPress={() => {navigation.navigate('Marketplace')}} activeOpacity={0}>
                 <MarketButton />
+             </TouchableOpacity>
+        </View>
+        <View 
+          style={{ 
+            position: "absolute",
+            bottom: 42,
+            right: 32
+           }} >
+             <TouchableOpacity onPress={() => {navigation.navigate('Checkout')}} activeOpacity={0}>
+                <AddToCartBtn />
              </TouchableOpacity>
         </View>
       </View>
@@ -128,18 +155,6 @@ export default class DesignScreen extends React.Component {
 
     this.ambient = new ThreeAR.Light();
     this.ambient.position.y = 2;
-    
-    console.log(this.state.selectedItem);
-    const { scene: loadedModel } = await ExpoTHREE.loadAsync(
-      this.state.selectedItem,
-      null
-    );
-    console.log(loadedModel);
-
-    ExpoTHREE.utils.scaleLongestSideToSize(loadedModel, 0.6);
-
-    this.mesh = new THREE.Object3D();
-    this.mesh.add(loadedModel);
 
     this.scene.add(this.ambient);
 
@@ -183,6 +198,16 @@ export default class DesignScreen extends React.Component {
       if (this.itemInScene) {
         this.scene.remove(this.itemInScene);
       }
+
+      console.log("loading model");
+      const { scene: loadedModel } = await ExpoTHREE.loadAsync(
+        this.state.selectedItem,
+        null
+      );
+      ExpoTHREE.utils.scaleLongestSideToSize(loadedModel, 0.6);
+  
+      this.mesh = new THREE.Object3D();
+      this.mesh.add(loadedModel);
 
       this.itemInScene = new ThreeAR.MagneticObject();
       this.itemInScene.add(this.mesh);
