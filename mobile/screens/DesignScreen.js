@@ -1,7 +1,8 @@
 import React from 'react';
 import { Asset } from 'expo-asset';
 import { AR } from 'expo';
-import ExpoTHREE, { AR as ThreeAR, THREE } from 'expo-three';
+import ExpoTHREE, { THREE } from 'expo-three';
+import * as ThreeAR from 'expo-three-ar';
 import { View as GraphicsView } from 'expo-graphics';
 import { Dimensions } from 'react-native';
 
@@ -24,7 +25,7 @@ export default class DesignScreen extends React.Component {
   }
 
   componentDidMount() {
-    ThreeAR.suppressWarnings();
+    //ThreeAR.suppressWarnings();
   }
 
   render() {
@@ -72,10 +73,12 @@ export default class DesignScreen extends React.Component {
     const ambientLight = new THREE.AmbientLight(0x222222);
     this.scene.add(ambientLight);
     
-    const { loadedModel } = await ExpoTHREE.loadAsync(
+    console.log(this.state.selectedItem);
+    const { scene: loadedModel } = await ExpoTHREE.loadAsync(
       this.state.selectedItem,
       null
     );
+    console.log(loadedModel);
 
     ExpoTHREE.utils.scaleLongestSideToSize(loadedModel, 0.6);
 
@@ -102,7 +105,7 @@ export default class DesignScreen extends React.Component {
       return;
     }
 
-    const size = this.render.getSize();
+    const size = this.renderer.getSize();
 
     const { hitTest } = await AR.performHitTest(
       {
@@ -122,7 +125,7 @@ export default class DesignScreen extends React.Component {
       this.itemInScene.add(this.mesh);
       this.scene.add(this.itemInScene);
 
-      this.magneticObject.matrixAutoUpdate = false;
+      this.itemInScene.matrixAutoUpdate = false;
   
       const matrix = new THREE.Matrix4();
       matrix.fromArray(worldTransform); 

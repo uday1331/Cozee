@@ -3,9 +3,8 @@ import { View, Text} from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-//import components
-import Home from './screens/Home';
-
+//import screens
+import DesignScreen from './screens/DesignScreen';
 
 class Details extends React.Component {
     render() {
@@ -19,11 +18,11 @@ class Details extends React.Component {
 
 const AppNavigator = createBottomTabNavigator(
     {
-        Home: Home,
+        Design: DesignScreen,
         Details : Details
     },
     {
-        initialRouteName : 'Home'
+        initialRouteName : 'Design'
     }
 
 );
