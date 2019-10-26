@@ -101,27 +101,6 @@ export default class Sales extends PureComponent {
             <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
           </LineChart>
         </Card>
-        <Card style={{ width: 450, margin: 0 }}>
-          <PieChart width={400} height={400}>
-            <Pie
-              data={dataPie}
-              cx={200}
-              cy={200}
-              labelLine={false}
-              label
-              outerRadius={80}
-              fill="#8884d8"
-              dataKey="value"
-            >
-              {dataPie.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-          </PieChart>
-        </Card>
       </div>
     );
   }
