@@ -85,7 +85,7 @@ class AppBar extends React.Component {
                 textAlign: "right"
               }}
             >
-              <Button type="primary" size="Large" style={{ marginRight: 20 }}>
+              <Button type="primary" size="large" style={{ marginRight: 20 }}>
                 Logout
               </Button>
             </Header>

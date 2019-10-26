@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, Text} from 'react-native';
 import { createAppContainer } from 'react-navigation';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
 
 //import screens
+import InitDesign from './screens/InitDesign';
 import DesignScreen from './screens/DesignScreen';
 
 class Details extends React.Component {
@@ -16,13 +18,34 @@ class Details extends React.Component {
     }
 }
 
-const AppNavigator = createBottomTabNavigator(
+const DesignStack = createStackNavigator(
+  {
+    Init: InitDesign,
+    Design: DesignScreen
+  },
+  {
+    initialRouteName: 'Init'
+  }
+);
+
+const AppNavigator = createMaterialTopTabNavigator(
     {
-        Design: DesignScreen,
-        Details : Details
+        Design: {
+          screen: DesignStack,
+          navigationOptions: {
+            tabBarVisible: false
+          }
+        },
+        Details : {
+          screen: Details,
+          navigationOptions: {
+            tabBarVisible: false
+          }
+        }
     },
     {
-        initialRouteName : 'Design'
+        initialRouteName : 'Details',
+        tabBarPosition: "bottom",
     }
 
 );
