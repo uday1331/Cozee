@@ -32,7 +32,8 @@ export function getProducts() {
                 price: data.price,
                 description: data.description,
                 category: data.category,
-                img: data.displayImage
+                img: data.displayImage,
+                company: data.company,
               };
               products.push(product);
             }
@@ -46,7 +47,8 @@ export function getProducts() {
                 price: data.price,
                 description: data.description,
                 category: data.category,
-                img: data.displayImage
+                img: data.displayImage,
+                company: data.company,
               };
               products[index] = product;
             }
@@ -86,7 +88,8 @@ export function uploadProduct(values, base64) {
           price: values.title,
           displayImage: url,
           description: values.description,
-          category: values.categories.join(" ")
+          category: values.categories.join(" "),
+          company:values.company,
         });
     } catch (e) {
       console.log(e.message);
@@ -124,7 +127,8 @@ export function uploadFile(base64string, values) {
                 price: values.price,
                 displayImage: url,
                 description: values.description ? values.description : "",
-                category: values.categories.join(" ")
+                category: values.categories.join(" "),
+                company:values.company,
               })
               .catch(e => console.log(e.message));
           });

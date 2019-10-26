@@ -45,7 +45,6 @@ class Items extends Component{
     componentDidMount() {
         this.props.getProducts();
     }
-
     render(){
         const { name,trusted, onPress } = this.props;
         const { products } = this.props.products;

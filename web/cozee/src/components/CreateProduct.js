@@ -93,6 +93,17 @@ handleChange = info => {
             ]
           })(<InputNumber placeholder="Price" />)}
         </Form.Item>
+          <Form.Item label="Company">
+              {getFieldDecorator("company", {
+                  rules: [
+                      {
+                          required: false,
+                          message: "Please input your name"
+                      }
+                  ],
+                  initialValue:'Idea'
+              })(<Input placeholder="Idea" disabled/>)}
+          </Form.Item>
         <Form.Item label="Description">
           {getFieldDecorator("description", {
             rules: [

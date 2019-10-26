@@ -23,9 +23,7 @@ class Product extends React.Component {
           <img
             alt={product.title}
             src={product.img}
-            style={{
-              height: "150px"
-            }}
+            style={{height:'150px', objectFit:"cover"}}
           />
         }
       >
