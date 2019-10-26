@@ -1,6 +1,7 @@
 import React,{ Component } from 'react';
 import { View,Text,ScrollView,StyleSheet } from 'react-native'; 
 import Items from './Items';
+
 const companies = [
     {
         id : 1,
@@ -30,14 +31,14 @@ const companies = [
 ]
 export default class Display extends Component{
     render(){
+        const { navigation } = this.props;
         return(
             <View>
                 <ScrollView>
                 {companies.map(company => {
-                    return <Items style={styles.list} key={company.id} name={company.name} trusted={company.trusted}/>
+                    return <Items style={styles.list} key={company.id} name={company.name} trusted={company.trusted} onPress={()=>{navigation.navigate('Furniture')}}/>
                 })}
                 </ScrollView>
-                
             </View>
         );
     }

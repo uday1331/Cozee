@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, View, Text, Image } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import Star from './Star';
 
 const items = [
@@ -42,7 +42,7 @@ const items = [
 ]
 export default class Items extends Component{
     render(){
-        const { name,trusted } = this.props;
+        const { name,trusted, onPress } = this.props;
         return(
             <View>
                 <View style={styles.title}>
@@ -53,7 +53,7 @@ export default class Items extends Component{
                 <ScrollView style={styles.container} horizontal={true}>
                     {items.map(item => {
                         return(
-                            <View style={styles.card} key={item.id}>
+                            <TouchableOpacity style={styles.card} key={item.id} onPress={()=>{onPress()}}>
                                 <View style={styles.imageContainer}>
                                     <Image 
                                         style={styles.image}
@@ -69,7 +69,7 @@ export default class Items extends Component{
                                         </View>
                                     </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         )
                         
                     })}
