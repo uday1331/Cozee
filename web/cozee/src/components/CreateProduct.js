@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "antd/dist/antd.css";
 import { FirebaseDB } from "../constants/firebase";
 import { connect } from "react-redux";
-import { uploadProduct} from "../store/actions/products";
+import {uploadFile, uploadProduct} from "../store/actions/products";
 
 import { Form, Select, Button, Upload, Icon, Input, InputNumber, message } from "antd";
 
@@ -53,7 +53,7 @@ handleChange = info => {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                this.props.uploadProduct(values, this.state.imageUrl);
+                this.props.uploadFile(this.state.imageUrl, values);
             }
         });
     };
@@ -181,5 +181,5 @@ const mapStateToProps = state => {
 };
 export default connect(
   mapStateToProps,
-  { uploadProduct }
+  { uploadFile }
 )(CreateProduct);
