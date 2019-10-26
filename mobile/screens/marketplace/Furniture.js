@@ -60,7 +60,7 @@ export default class Furniture extends Component {
                                 <Right>
                                     <Button transparent onPress={this.onCommentPress}>
                                         <FontAwesome name='comment' size={15} color='#4da6ff' />
-                                        <Text style={{ color: '#4da6ff' }}>{showComment ? 'Hide Comments' : '7 Comments'}</Text>
+                                        <Text style={{ color: '#4da6ff' }}>{showComment ? 'Hide Comments' : '2 Comments'}</Text>
                                     </Button>
                                 </Right>
                             </CardItem>
