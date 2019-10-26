@@ -4,7 +4,8 @@ import { AR } from 'expo';
 import ExpoTHREE, { THREE } from 'expo-three';
 import * as ThreeAR from 'expo-three-ar';
 import { View as GraphicsView } from 'expo-graphics';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, View, Alert } from 'react-native';
+import { captureRef as takeSnapshotAsync } from 'react-native-view-shot';
 
 import Assets from '../assets';
 import TouchableView from '../components/TouchableView';
@@ -24,6 +25,24 @@ export default class DesignScreen extends React.Component {
     }
   }
 
+  async captureImage() {
+    // const targetPixelCount = 1080; // If you want full HD pictures
+    // const pixelRatio = PixelRatio.get(); // The pixel ratio of the device
+    // // pixels * pixelratio = targetPixelCount, so pixels = targetPixelCount / pixelRatio
+    // const pixels = targetPixelCount / pixelRatio;
+
+    const result = await takeSnapshotAsync(this.refs.captureArea, {
+      result: 'tmpfile',
+      height,
+      width,
+      quality: 1,
+      format: 'jpg',
+    });
+
+    console.log(result);
+    Alert.alert("Image saved in gallery.");
+  }
+
   get screenCenter() {
     return new THREE.Vector2(width / 2, height / 2);
   }
@@ -35,29 +54,33 @@ export default class DesignScreen extends React.Component {
   render() {
     const { navigation } = this.props;
     return(
-      <View style={{ flex: 1 }}>
-        <TouchableView
-          style={{ flex: 1 }}
-          shouldCancelWhenOutside={false}
-          onTouchesBegan={this.onTouchesBegan}>
-          <GraphicsView
+      <View style={{ flex: 1 }} >
+        <View ref="captureArea" style={{ flex: 1 }}>
+          <TouchableView
             style={{ flex: 1 }}
-            onContextCreate={this.onContextCreate}
-            onRender={this.onRender}
-            onResize={this.onResize}
-            isArEnabled
-            //isArRunningStateEnabled
-            isArCameraStateEnabled
-            arTrackingConfiguration={'ARWorldTrackingConfiguration'}
-          />
-        </TouchableView>
+            shouldCancelWhenOutside={false}
+            onTouchesBegan={this.onTouchesBegan}>
+            <GraphicsView
+              style={{ flex: 1 }}
+              onContextCreate={this.onContextCreate}
+              onRender={this.onRender}
+              onResize={this.onResize}
+              isArEnabled
+              //isArRunningStateEnabled
+              isArCameraStateEnabled
+              arTrackingConfiguration={'ARWorldTrackingConfiguration'}
+            />
+          </TouchableView>
+        </View>
         <View 
           style={{ 
             position: "absolute",
             bottom: 10,
             left: (width / 2) - 38
            }} >
-             <Capture />
+             <TouchableOpacity onPress={() => {this.captureImage()}} activeOpacity={0}>
+               <Capture />
+             </TouchableOpacity>
         </View>
         <View 
           style={{ 
@@ -83,20 +106,28 @@ export default class DesignScreen extends React.Component {
       height,
     });
 
+    this.renderer.gammaInput = this.renderer.gammaOutput = true;
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.physicallyCorrectLights = true;
+    this.renderer.toneMapping = THREE.ReinhardToneMapping;
+
     this.scene = new THREE.Scene();
     this.scene.background = new ThreeAR.BackgroundTexture(this.renderer);
     this.camera = new ThreeAR.Camera(width, height, 0.01, 1000);
 
-    const directionalLightA = new THREE.DirectionalLight(0xffffff);
-    directionalLightA.position.set(1, 1, 1);
-    this.scene.add(directionalLightA);
+    // const directionalLightA = new THREE.DirectionalLight(0xffffff);
+    // directionalLightA.position.set(1, 1, 1);
+    // this.scene.add(directionalLightA);
 
-    const directionalLightB = new THREE.DirectionalLight(0xffeedd);
-    directionalLightB.position.set(-1, -1, -1);
-    this.scene.add(directionalLightB);
+    // const directionalLightB = new THREE.DirectionalLight(0xffeedd);
+    // directionalLightB.position.set(-1, -1, -1);
+    // this.scene.add(directionalLightB);
 
-    const ambientLight = new THREE.AmbientLight(0x222222);
-    this.scene.add(ambientLight);
+    // const ambientLight = new THREE.AmbientLight(0x222222);
+    // this.scene.add(ambientLight);
+
+    this.ambient = new ThreeAR.Light();
+    this.ambient.position.y = 2;
     
     console.log(this.state.selectedItem);
     const { scene: loadedModel } = await ExpoTHREE.loadAsync(
@@ -109,6 +140,10 @@ export default class DesignScreen extends React.Component {
 
     this.mesh = new THREE.Object3D();
     this.mesh.add(loadedModel);
+
+    this.scene.add(this.ambient);
+
+    this.scene.add(new THREE.AmbientLight(0x404040));
   }
 
   onResize = ({ x, y, scale, width, height }) => {
@@ -122,6 +157,9 @@ export default class DesignScreen extends React.Component {
     if (this.itemInScene) {
       this.itemInScene.update(this.camera, this.screenCenter);
     }
+
+    this.ambient.update();
+
     this.renderer.render(this.scene, this.camera);
   };
 
