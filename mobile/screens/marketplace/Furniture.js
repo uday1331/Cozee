@@ -3,6 +3,8 @@ import { ScrollView, StyleSheet, Image, View, TouchableOpacity } from 'react-nat
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { FontAwesome, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import CommentList from '../../components/CommentList';
+import Assets from '../../assets';
+
 export default class Furniture extends Component {
     state = {
         liked: false,
@@ -23,6 +25,12 @@ export default class Furniture extends Component {
         })
     }
 
+    tryInAR = () => {
+        this.props.navigation.navigate('Design', {
+            selectedItem: Assets.models.stool
+        });
+    }
+
     render() {
         const { liked, showComment } = this.state;
         return (
@@ -41,7 +49,7 @@ export default class Furniture extends Component {
                                     </Body>
                                 </Left>
                                 <Right>
-                                    <Button bordered info>
+                                    <Button onPress={() => {this.tryInAR()}} bordered info>
                                         <MaterialCommunityIcons color='#4da6ff' name='augmented-reality' size={25} style={{ marginLeft: 5 }} />
                                         <Text>Try It</Text>
                                     </Button>
