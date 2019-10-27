@@ -3,7 +3,6 @@ import {
   Firebase,
   FirebaseStorage
 } from "../../constants/firebase";
-import {ADD_ORDER} from "../../../web/cozee/src/store/actions/products";
 
 export const GET_PRODUCTS = "GET_PRODUCTS";
 export const FETCH_ERROR = "FETCH_ERROR";

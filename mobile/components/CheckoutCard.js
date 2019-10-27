@@ -9,7 +9,8 @@ const CheckoutCard = (props) => {
                 style={{ resizeMode: 'cover', flex: 1, width: null, height: null }}/>
             </View>
             <View style={{ flex: 1, paddingTop: 12, paddingHorizontal: 12 }}>
-                <Text style={{ fontSize: 16, fontWeight: "bold" }}>{props.title}</Text>
+                <Text style={{ fontSize: 24, fontWeight: "bold" }}>{props.title}</Text>
+                <Text style={{ fontSize: 16, fontWeight: "bold" }}>{props.price}</Text>
             </View>
         </View>
     );
