@@ -31,7 +31,7 @@ class Checkout extends React.Component {
                     title="Checkout"
                     onPress={() => {
                         this.props.addOrder(ids);
-                        Alert.alert('Order place')
+                        Alert.alert('Order placed.')
                     }} />
             </View>
         );
