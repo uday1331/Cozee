@@ -1,7 +1,8 @@
-import {GET_PRODUCTS} from "../actions/products";
+import {GET_ORDERS, GET_PRODUCTS} from "../actions/products";
 
 export const initialState= {
     products:[],
+    orders:[],
 }
 
 export default (state = initialState, action) => {
@@ -10,6 +11,11 @@ export default (state = initialState, action) => {
             return{
                 ...state,
                 products: action.data,
+            }
+        case GET_ORDERS:
+            return {
+                ...state,
+                orders: action.data,
             }
         default:
             return{
