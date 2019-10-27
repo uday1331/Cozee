@@ -145,30 +145,32 @@ export function uploadFile(base64string, values) {
 }
 
 async function getProduct(id){
-  let productRef = FirebaseDB.collection('products').doc(id);
-  try{
-    let snap = await productRef.get();
-    let data = snap.data();
-    console.log(snap);
-    console.log(data);
-    if(data){
-      let product = {
-        id: snap.id,
-        title: data.title,
-        img: data.displayImage,
-        description: data.description,
-        category: data.category,
-        price: data.price,
+  if(id){
+    let productRef = FirebaseDB.collection('products').doc(id);
+    try{
+      let snap = await productRef.get();
+      let data = snap.data();
+      console.log(snap);
+      console.log(data);
+      if(data){
+        let product = {
+          id: snap.id,
+          title: data.title,
+          img: data.displayImage,
+          description: data.description,
+          category: data.category,
+          price: data.price,
+        }
+        return product;
+      }else {
+        console.log('exit');
+        return;
       }
-      return product;
-    }else {
-      console.log('exit');
-      return;
-    }
 
-  }catch(e){
-    console.log(e.message);
-    return  null}
+    }catch(e){
+      console.log(e.message);
+      return  null}
+  }
 }
 
 export function getOrders(id) {
@@ -180,37 +182,59 @@ export function getOrders(id) {
       }));
     }
     try{
-      // let orderRef = FirebaseDB.collection('orders').doc(id).collection("products");
-      let orderRef = FirebaseDB.collection('orders').get().then(  orderRef => {
-            let orders = [];
-            orderRef.forEach(async doc => {
-              console.log(doc);
-              let productRef = await FirebaseDB.collection('orders').doc(doc.id).collection("products");
+      let orderRef = FirebaseDB.collection('orders');
+      let orders = [];
+      await orderRef.onSnapshot(snapshot => {
+        snapshot.docChanges().map(change => {
+          if(change.type === "added"){
+            let index = orders.findIndex(e=> e.id === change.doc.id)
+            if(index === -1){
+              console.log('here');
+              let id = change.doc.id;
+              let data = change.doc.data();
+              let productIds = data.products.split(',');
               let products = [];
-              productRef.get().then(async snap=> {
-                await snap.forEach(async doc=> {
-                  let id = doc.id;
-                  console.log(id);
+              productIds.map(async id => {
+                let product = await getProduct(id);
+                console.log(product);
+                products.push(product);
+              })
+              orders.push({
+                id: id,
+                products: products
+              })
+            }
+          }else if(change.type === 'modified'){
+            let index = orders.findIndex(e=> e.id === change.doc.id)
+            if(index !== -1){
+              let id = change.doc.id;
+              let data = change.doc.data();
+              let productIds = data.products.split(',');
+              let products = [];
+              productIds.map(async id => {
+                if(id) {
                   let product = await getProduct(id);
                   products.push(product);
-                  console.log(products);
-                  if(products.length === snap.size && snap.size !== 0)
-                  {
-                    orders.push(products);
-                  }
-                });
+                }
               })
-              if(orders.length === orderRef.size && orderRef !== 0)
-              {
-                dispatch({
-                  type:GET_ORDERS,
-                  data:orders,
-                })
+              orders[index] = {
+                id: id,
+                products: products
               }
-            })
-
+            }
           }
-      );
+          if(orders.length === snapshot.size && snapshot.size !== 0)
+          {
+            dispatch({
+              type:GET_ORDERS,
+              data: orders,
+            })
+          }
+        })
+
+
+      })
+
 
 
     }catch(e){

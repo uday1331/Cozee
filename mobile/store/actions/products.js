@@ -153,17 +153,17 @@ export function addOrder(ids){
       })
     }
     try{
-      let orderRef = await FirebaseDB.collection("orders");
-      let orderId = orderRef.doc().id;
-      ids.map(async id => {
-        await orderRef.doc(orderId).collection('products').doc(id).set({
-          qty:1,
+      let stringIds;
+      stringIds = ids.join(',');
+      let orderRef = await FirebaseDB.collection("orders").add({
+        products:stringIds,
+      }).then(docRef => {
+        dispatch({
+          type:ADD_ORDER,
+          data:id,
         })
       })
-      dispatch({
-        type:ADD_ORDER,
-        data:id,
-      })
+
     }catch(e){
       dispatch({
         type:FETCH_ERROR,
