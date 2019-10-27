@@ -144,7 +144,34 @@ export function uploadFile(base64string, values) {
   };
 }
 
-export function getOrders() {
+async function getProduct(id){
+  let productRef = FirebaseDB.collection('products').doc(id);
+  try{
+    let snap = await productRef.get();
+    let data = snap.data();
+    console.log(snap);
+    console.log(data);
+    if(data){
+      let product = {
+        id: snap.id,
+        title: data.title,
+        img: data.displayImage,
+        description: data.description,
+        category: data.category,
+        price: data.price,
+      }
+      return product;
+    }else {
+      console.log('exit');
+      return;
+    }
+
+  }catch(e){
+    console.log(e.message);
+    return  null}
+}
+
+export function getOrders(id) {
   return async dispatch => {
     if(Firebase === null){
       return (dispatch({
@@ -153,7 +180,38 @@ export function getOrders() {
       }));
     }
     try{
-      let orderRef = FirebaseDB.collection('orders');
+      // let orderRef = FirebaseDB.collection('orders').doc(id).collection("products");
+      let orderRef = FirebaseDB.collection('orders').get().then(  orderRef => {
+            let orders = [];
+            orderRef.forEach(async doc => {
+              console.log(doc);
+              let productRef = await FirebaseDB.collection('orders').doc(doc.id).collection("products");
+              let products = [];
+              productRef.get().then(async snap=> {
+                await snap.forEach(async doc=> {
+                  let id = doc.id;
+                  console.log(id);
+                  let product = await getProduct(id);
+                  products.push(product);
+                  console.log(products);
+                  if(products.length === snap.size && snap.size !== 0)
+                  {
+                    orders.push(products);
+                  }
+                });
+              })
+              if(orders.length === orderRef.size && orderRef !== 0)
+              {
+                dispatch({
+                  type:GET_ORDERS,
+                  data:orders,
+                })
+              }
+            })
+
+          }
+      );
+
 
     }catch(e){
       dispatch({

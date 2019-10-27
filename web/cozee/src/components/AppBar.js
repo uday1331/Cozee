@@ -77,6 +77,12 @@ class AppBar extends React.Component {
                   <span className="nav-text">Sales</span>
                 </Link>
               </Menu.Item>
+              <Menu.Item key="4">
+                <Link to="/orders">
+                  <Icon type="transaction" />
+                  <span className="nav-text">Orders</span>
+                </Link>
+              </Menu.Item>
             </Menu>
           </Sider>
           <Layout>

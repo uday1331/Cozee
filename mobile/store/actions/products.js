@@ -3,7 +3,6 @@ import {
   Firebase,
   FirebaseStorage
 } from "../../constants/firebase";
-import {ADD_ORDER} from "../../../web/cozee/src/store/actions/products";
 
 export const GET_PRODUCTS = "GET_PRODUCTS";
 export const FETCH_ERROR = "FETCH_ERROR";
@@ -155,9 +154,9 @@ export function addOrder(ids){
     }
     try{
       let orderRef = await FirebaseDB.collection("orders");
-      let id = orderRef.doc().id;
+      let orderId = orderRef.doc().id;
       ids.map(async id => {
-        await orderRef.doc(id).collection('products').doc(id).set({
+        await orderRef.doc(orderId).collection('products').doc(id).set({
           qty:1,
         })
       })
