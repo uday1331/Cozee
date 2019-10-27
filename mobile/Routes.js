@@ -23,7 +23,6 @@ class Details extends React.Component {
 
 const DesignStack = createStackNavigator(
   {
-    Init: InitDesign,
     Design: {
       screen: DesignScreen,
       navigationOptions: {
@@ -50,30 +49,8 @@ const DesignStack = createStackNavigator(
     }
   },
   {
-    initialRouteName: 'Init'
+    initialRouteName: 'Design'
   }
 );
 
-const AppNavigator = createMaterialTopTabNavigator(
-    {
-        Design: {
-          screen: DesignStack,
-          navigationOptions: {
-            tabBarVisible: false
-          }
-        },
-        Details : {
-          screen: Details,
-          navigationOptions: {
-            tabBarVisible: false
-          }
-        }
-    },
-    {
-        initialRouteName : 'Details',
-        tabBarPosition: "bottom",
-    }
-
-);
-
-export default createAppContainer(AppNavigator);
+export default createAppContainer(DesignStack);

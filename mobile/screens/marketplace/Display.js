@@ -27,11 +27,6 @@ const companies = [
         id : 5,
         name : 'LampIt',
         trusted : false
-    },
-    {
-        id : 6,
-        name : 'Beautiful House',
-        trusted : false
     }
 ]
 export default class Display extends Component{

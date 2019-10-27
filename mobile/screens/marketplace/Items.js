@@ -65,7 +65,7 @@ const mapStateToProps = (state) => {
 }
 export default connect(mapStateToProps, {getProducts})(Items);
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     title : {
         padding : 5,
         display : 'flex',

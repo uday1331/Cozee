@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Button, Text } from 'react-native';
+import { View, Button, Text, Alert } from 'react-native';
 import CheckoutCard from '../components/CheckoutCard';
 import {addOrder} from "../store/actions/products";
+import { connect } from "react-redux";
 
 class Checkout extends React.Component {
     constructor(props) {
@@ -9,11 +10,11 @@ class Checkout extends React.Component {
 
         this.state = {
             cartItem: [{
-                id : '9gRo2xMlAwDsZt8IVZdi',
-                uri : 'https://www.fantasticfurniture.com.au/medias/BTOBEDDBLOOOFABCHA-LIF-CONTAINER-original-FantasticFurniture-WF-Product-Detail?context=bWFzdGVyfGltYWdlcy9CVE9CRUREQkxPT09GQUJDSEF8MTE4NTAwfGltYWdlL2pwZWd8aW1hZ2VzL0JUT0JFRERCTE9PT0ZBQkNIQS9oOGIvaDUwLzkwNjA4MjMzMDIxNzQuanBnfDAwOTZiZTA2OTU0MjI1NDBkZWM1MGVhNjBkZjYxZjdjYmRkMGFiMGVjM2I3ZmEwYjAxMmI1YjVkNzU2YTEyNzU',
-                name : 'Fancy King size bed',
-                rating : 3.1,
-                price : '$5,042 HKD'
+                id : 'oXVfnw2xggEbY6Wz2YmC',
+                uri : 'https://firebasestorage.googleapis.com/v0/b/furnitureapp-292c6.appspot.com/o/products%2FoXVfnw2xggEbY6Wz2YmC%2FdisplayImage?alt=media&token=725a6ef1-b2d9-4b7d-bf92-0f74b9d5afd3',
+                name : 'Minimalistic Cupboard',
+                rating : 5,
+                price : '$2799 HKD'
             }]
         }
     }
@@ -23,7 +24,7 @@ class Checkout extends React.Component {
         return(
             <View style={{ flex: 1 }}>
                 <Text style={{ fontSize: 24, marginTop: 20, marginLeft: 20 }}> Your Items </Text>
-                <CheckoutCard imageUri={this.state.cartItem.uri} title={this.state.cartItem.name} />
+                <CheckoutCard imageUri={this.state.cartItem[0].uri} title={this.state.cartItem[0].name} price={this.state.cartItem[0].price} />
                 <View style={{ height: 250 }}></View>
                 <Button 
                     style={{ position: 'absolute', bottom: 0 }}

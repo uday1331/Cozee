@@ -101,7 +101,7 @@ export default class DesignScreen extends React.Component {
         <View
           style={{
             position: "absolute",
-            bottom: 42,
+            bottom: 41,
             left: 32
           }} >
           <TouchableOpacity onPress={() => { navigation.navigate('Marketplace') }} activeOpacity={0}>
